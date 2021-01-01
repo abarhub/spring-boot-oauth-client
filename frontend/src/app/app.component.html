@@ -533,5 +533,11 @@
   <li *ngFor="let produit of listeProduits">{{produit.id}} / {{produit.nom}}</li>
 </ul>
 
+<hr/>
+
+user:{{user | json}}<br/>
+<button (click)="login()">Login</button><br/>
+<button (click)="logout()">Logout</button><br/>
+<button (click)="updateUser()">Mise a jour utilisateur</button><br/>
 
 <router-outlet></router-outlet>
