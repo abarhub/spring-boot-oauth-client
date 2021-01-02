@@ -3,18 +3,20 @@ import {ProduitService} from "./service/produit.service";
 import {ProduitModel} from "./model/produit.model";
 import {UserService} from "./service/user.service";
 import {UserModel} from "./model/user.model";
-import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
+import {AuthConfig, OAuthErrorEvent, OAuthService} from "angular-oauth2-oidc";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'frontend';
 
-  listeProduits: ProduitModel[]=[];
-  user:UserModel|null=null;
+  listeProduits: ProduitModel[] = [];
+  user: UserModel | null = null;
+  messageErreur: string = '';
 
   private authCodeFlowConfig: AuthConfig = {
     // Url of the Identity Provider
@@ -23,7 +25,8 @@ export class AppComponent implements OnInit{
 
     // URL of the SPA to redirect the user to after login
     //redirectUri: window.location.origin + '/index.html',
-    redirectUri: 'http://localhost:4200/',
+    //redirectUri: 'http://localhost:4200/',
+    redirectUri: window.location.origin,
 
     // The SPA's id. The SPA is registerd with this id at the auth-server
     // clientId: 'server.code',
@@ -51,13 +54,25 @@ export class AppComponent implements OnInit{
               private oauthService: OAuthService) {
     this.oauthService.configure(this.authCodeFlowConfig);
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.events.subscribe(event => {
+      if (event instanceof OAuthErrorEvent) {
+        console.error(event);
+      } else {
+        console.warn(event);
+      }
+    });
+    this.oauthService.events.pipe(filter(e => e.type === 'session_terminated')).subscribe(e => {
+      console.debug('Your session has been terminated!');
+    })
   }
 
   ngOnInit(): void {
-    this.produitService.getProduits().subscribe(data=> {
-      this.listeProduits=data;
-    },error => {
-      console.log("Erreur get produit",error);
+    this.produitService.getProduits().subscribe(data => {
+      this.listeProduits = data;
+    }, error => {
+      console.log("Erreur get produit", error);
+      this.messageErreur='Erreur pour récupérer la liste des produits';
     });
   }
 
@@ -72,14 +87,28 @@ export class AppComponent implements OnInit{
   }
 
   updateUser() {
-    this.userService.getUser().subscribe(data =>{
-      if(!data||!data.connecte){
-        this.user=null;
+    this.userService.getUser().subscribe(data => {
+      if (!data || !data.connecte) {
+        this.user = null;
       } else {
-        this.user=data;
+        this.user = data;
       }
-    },error => {
-      console.log("Erreur get user",error);
+    }, error => {
+      console.log("Erreur get user", error);
+      this.messageErreur='Erreur pour récupérer l\'utilisateur';
+    })
+  }
+
+  updateUser2() {
+    this.userService.getUser2().subscribe(data => {
+      if (!data || !data.connecte) {
+        this.user = null;
+      } else {
+        this.user = data;
+      }
+    }, error => {
+      console.log("Erreur get user", error);
+      this.messageErreur='Erreur pour récupérer l\'utilisateur 2';
     })
   }
 }

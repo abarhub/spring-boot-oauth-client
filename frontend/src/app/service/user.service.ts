@@ -18,4 +18,8 @@ export class UserService {
     return this.http.get<UserModel>(this.userUrl+'/connecte');
   }
 
+  getUser2():Observable<UserModel> {
+    return this.http.get<UserModel>(this.userUrl+'/connecte2');
+  }
+
 }

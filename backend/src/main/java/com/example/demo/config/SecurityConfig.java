@@ -21,6 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/api/users/connecte")
                 .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users/connecte2")
+                .authenticated()
                 .anyRequest()
                 .authenticated()
                 .and()
