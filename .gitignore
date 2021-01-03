@@ -12,3 +12,4 @@ buildNumber.properties
 .idea/
 /node_modules/
 /frontend/node/
+/request/http-client.private.env.json

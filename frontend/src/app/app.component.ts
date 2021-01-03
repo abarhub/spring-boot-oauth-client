@@ -96,7 +96,7 @@ export class AppComponent implements OnInit {
     }, error => {
       console.log("Erreur get user", error);
       this.messageErreur='Erreur pour récupérer l\'utilisateur';
-    })
+    });
   }
 
   updateUser2() {
@@ -109,6 +109,15 @@ export class AppComponent implements OnInit {
     }, error => {
       console.log("Erreur get user", error);
       this.messageErreur='Erreur pour récupérer l\'utilisateur 2';
-    })
+    });
+  }
+
+  getListeRoles() {
+    this.userService.getListeRoles().subscribe(data => {
+      console.log("getRoles réussi");
+    }, error => {
+      console.log("Erreur get roles", error);
+      this.messageErreur='Erreur pour récupérer les roles';
+    });
   }
 }

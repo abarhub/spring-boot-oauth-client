@@ -22,4 +22,8 @@ export class UserService {
     return this.http.get<UserModel>(this.userUrl+'/connecte2');
   }
 
+  getListeRoles():Observable<void> {
+    return this.http.get<void>(this.userUrl+'/liste-roles');
+  }
+
 }

@@ -68,4 +68,10 @@ public class UserController {
         }
         return user;
     }
+
+    @GetMapping("/liste-roles")
+    public void getListeRoles(){
+        LOGGER.info("getListeRoles()");
+        userService.getListeRoles();
+    }
 }

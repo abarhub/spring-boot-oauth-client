@@ -47,6 +47,16 @@ Dans KeyCloak, il faut définir le temps maximum de rafrechissement du token
 Si Spring a besoin d'accéder a des info de KeyCloak, il ne doit pas utiliser le token venant d'Angular,
 mais faire la propre connection avec login/mot de passe.
 
+
+
+
 Aides :
 
-
+https://www.baeldung.com/spring-webclient-oauth2
+https://www.appsdeveloperblog.com/keycloak-rest-api-create-a-new-user/
+http://localhost:8180/auth/
+http://localhost:4200/
+https://stackoverflow.com/questions/56743109/keycloak-create-admin-user-in-a-realm
+https://gist.github.com/luciddreamz/83a888eedd9274b4045a3ab8af064faa
+https://www.baeldung.com/postman-keycloak-endpoints
+https://www.keycloak.org/docs-api/5.0/rest-api/index.html#_roles_resource

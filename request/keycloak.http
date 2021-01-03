@@ -1,0 +1,104 @@
+
+# curl -X POST "http://localhost:8180/auth/realms/test1/protocol/openid-connect/token"
+# -H "Content-Type: application/x-www-form-urlencoded"
+# -d "username=${KEYCLOAK_CLIENT_ID}"
+# -d "password=${KEYCLOAK_CLIENT_SECRET}"
+# -d 'grant_type=password'
+# -d 'client_id=admin-cli'
+# connexion avec login/mot de passe
+POST {{hostkeycloak}}/realms/{{realms}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+username={{login}}&password={{password}}&grant_type=password&client_id=admin-cli
+
+
+> {% client.global.set("token", response.body.access_token); %}
+
+
+###
+
+# curl -X GET "http://localhost:8180/admin/realms/test1/users/aaa"
+#-H "Accept: application/json"
+#-H "Authorization: Bearer $TKN"
+GET {{hostkeycloak}}/realms/{{realms}}/users/f139c798-956e-442c-b6b4-bafb17689302
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+###
+
+#POST /submit.php HTTP 1.1
+#Content-Type: application/x-www-form-urlencoded
+
+#foo1=bar&foo2=bar&foo3=bar&foo4=bar&foo5=bar&foo6=bar&foo7=bar&foo8=bar&foo9=bar
+
+
+POST http://localhost:8180/auth/realms/test1/protocol/openid-connect/token HTTP 1.1
+Content-Type: application/x-www-form-urlencoded; boundary=boundary
+
+--boundary
+username=&password=&grant_type=password&client_id=admin-cli
+
+
+#GET http://localhost:8180/auth/admin/realms/${KEYCLOAK_REALM}/users/${$USER_ID} HTTP 1.1
+#Accept: application/json
+#Authorization: Bearer $TKN
+
+###
+
+# liste des ends point
+GET {{hostkeycloak}}/realms/{{realms}}/.well-known/openid-configuration
+
+###
+
+# user info
+GET {{hostkeycloak}}/realms/{{realms}}/protocol/openid-connect/userinfo
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# introspec
+POST {{hostkeycloak}}/realms/{{realms}}/protocol/openid-connect/token/introspect
+Content-Type: application/x-www-form-urlencoded
+
+#token={{token}}&client_id=admin-cli&client_secret={{password}}
+token={{token}}&client_id=testspa2&client_secret=xxx
+
+###
+
+# connection avec
+
+POST {{hostkeycloak}}/realms/{{realms}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+username={{login}}&password={{password}}&grant_type=password&client_id=test1
+
+
+
+> {% client.global.set("token", response.body.json.access_token); %}
+
+###
+
+# get user info
+POST {{hostkeycloak}}/realms/{{realms}}/protocol/openid-connect/userinfo
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer {{token}}
+
+
+###
+
+# get all roles
+GET {{hostkeycloak}}/admin/realms/{{realms}}/clients/6310095b-a025-4574-b74c-5a5a4cccd4bd/roles
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+# get all users
+GET {{hostkeycloak}}/admin/realms/{{realms}}/users
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+

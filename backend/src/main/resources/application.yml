@@ -8,4 +8,18 @@ spring:
                     issuer-uri: http://localhost:8180/auth/realms/test1
                     jwk-set-uri: http://localhost:8180/auth/realms/test1/protocol/openid-connect/certs
 
+            client:
+                registration:
+                    backend:
+                        authorization-grant-type: client_credentials
+                        client-id: testspa2
+                        client-secret: XXXX
 
+                provider:
+                    backend:
+                        #token-uri: http://localhost:8180/auth/token
+                        token-uri: http://localhost:8180/auth/realms/test1/protocol/openid-connect/token
+
+
+#app.get-roles: http://localhost:8080/auth/test1/realms/realm-name/clients/client-id/roles
+app.get-roles: http://localhost:8180/auth/admin/realms/test1/clients/6310095b-a025-4574-b74c-5a5a4cccd4bd/roles
